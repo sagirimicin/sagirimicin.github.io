@@ -38,12 +38,12 @@ Some work cannot be shared in detail due to confidentiality.
 
 ## Live
 
-👉 https://micingans.github.io
+👉 https://sagirimicin.github.io
 
 ## Contact
 
 - GitHub: https://github.com/micingans  
-- Email: firzaanonymous@gmail.com  
+- Email: firzaanonymous@gmail.com
 
 ---
 
