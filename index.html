@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Jai Pratama — Security Researcher focused on automation and system analysis.">
+<meta name="description" content="Jai Pratama — Linux infrastructure and security specialist focused on incident response, server hardening, monitoring, and automation.">
 <meta name="theme-color" content="#282a36">
-<title>Jai Pratama</title>
+<title>Jai Pratama | Linux & Security</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -718,7 +718,126 @@ p {
     outline-offset: 4px;
 }
 
+
+.achievement-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 24px;
+    margin-top: 28px;
+    padding-top: 22px;
+    border-top: 1px solid rgba(68, 71, 90, 0.7);
+    color: var(--muted);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px;
+}
+
+.achievement-strip span::before {
+    content: ">";
+    margin-right: 8px;
+    color: var(--green);
+}
+
+.experience-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(18px, 2.5vw, 26px);
+}
+
+.role-meta {
+    margin: -4px 0 14px;
+    color: var(--cyan);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px;
+}
+
+.recent-work {
+    overflow: hidden;
+    border: 1px solid rgba(68, 71, 90, 0.95);
+    border-radius: var(--radius);
+    background: var(--surface-soft);
+}
+
+.work-item {
+    display: grid;
+    grid-template-columns: 145px minmax(0, 1fr);
+    gap: 28px;
+    padding: clamp(20px, 2.6vw, 28px);
+}
+
+.work-item + .work-item {
+    border-top: 1px solid rgba(68, 71, 90, 0.85);
+}
+
+.work-date {
+    color: var(--pink);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.work-content p {
+    margin: 8px 0 0;
+    color: var(--muted);
+}
+
+.footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 30px 0 42px;
+    border-top: 1px solid rgba(68, 71, 90, 0.75);
+    color: var(--muted);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px;
+}
+
+.footer-signature {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    letter-spacing: 0.02em;
+}
+
+.footer-signature::before {
+    width: 22px;
+    height: 1px;
+    background: linear-gradient(90deg, var(--purple), var(--pink));
+    content: "";
+    opacity: 0.8;
+}
+
+.footer-heart {
+    display: inline-block;
+    color: var(--pink);
+    font-weight: 700;
+    text-shadow: 0 0 14px rgba(255, 121, 198, 0.42);
+    transform-origin: center;
+    animation: footer-heartbeat 2.4s ease-in-out infinite;
+}
+
+.footer-meta {
+    color: rgba(248, 248, 242, 0.58);
+}
+
+.footer-separator {
+    padding-inline: 6px;
+    color: var(--purple);
+}
+
+@keyframes footer-heartbeat {
+    0%, 38%, 100% { transform: scale(1); }
+    44% { transform: scale(1.16); }
+    50% { transform: scale(1); }
+    56% { transform: scale(1.1); }
+    64% { transform: scale(1); }
+}
+
 @media (max-width: 900px) {
+    .experience-grid {
+        grid-template-columns: 1fr;
+    }
+
     .hero {
         min-height: auto;
         padding-block: calc(var(--nav-height) + 70px) 90px;
@@ -739,6 +858,16 @@ p {
 }
 
 @media (max-width: 760px) {
+    .work-item {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .footer {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
     .menu-toggle {
         display: inline-grid;
         place-items: center;
@@ -861,8 +990,9 @@ p {
         <div class="nav-right" id="navLinks">
             <a href="#about">About</a>
             <a href="#skills">Skills</a>
+            <a href="#experience">Experience</a>
             <a href="#projects">Projects</a>
-            <a href="#case">Highlights</a>
+            <a href="#case">Recent Work</a>
             <a href="#contact">Contact</a>
         </div>
     </nav>
@@ -872,13 +1002,13 @@ p {
     <section class="hero" aria-labelledby="heroTitle">
         <div class="hero-grid">
             <div class="hero-text reveal visible">
-                <p class="eyebrow">Available for technical collaboration</p>
+                <p class="eyebrow">Linux · Infrastructure · Defensive Security</p>
                 <h1 id="heroTitle">Jai Pratama</h1>
-                <p class="hero-copy">Security Researcher focused on automation and system analysis.</p>
-                <p class="hero-subcopy">I build practical, automation-driven workflows for security operations, Linux systems, and technical analysis.</p>
+                <p class="hero-copy">Linux and security specialist focused on incident response, server hardening, and automation.</p>
+                <p class="hero-subcopy">I investigate compromised systems, build practical security tooling, and improve monitoring across server, network, and web environments.</p>
 
                 <div class="hero-actions">
-                    <a class="button primary" href="#projects">View projects</a>
+                    <a class="button primary" href="#case">View recent work</a>
                     <a class="button" href="https://github.com/sagirimicin" target="_blank" rel="noopener noreferrer">GitHub</a>
                 </div>
 
@@ -914,18 +1044,23 @@ p {
 
         <div class="grid">
             <div>
-                <p>I build tools and workflows to automate complex processes and reduce manual effort. My focus is on scripting, system analysis, and handling data at scale.</p>
-                <p class="muted">I prefer working close to the system level using Bash, Python, and native Linux tools, keeping solutions fast, lightweight, and controllable.</p>
+                <p>I have around five years of hands-on experience using and managing Linux systems. My work covers VPS infrastructure, web stacks, server security, troubleshooting, and automation, with most tasks performed directly from the terminal.</p>
+                <p class="muted">I work with Bash, Python, Go, and PHP, and regularly investigate logs, processes, network connections, permissions, services, persistence mechanisms, and suspicious files.</p>
             </div>
 
             <div>
                 <ul>
-                    <li>Automation of repetitive security workflows</li>
-                    <li>System and network behavior analysis</li>
-                    <li>Efficient scripting for real-world usage</li>
+                    <li>Linux incident investigation and evidence collection</li>
+                    <li>Server hardening and post-compromise recovery</li>
+                    <li>Network monitoring and operational automation</li>
                 </ul>
-                <p class="quote">Automate first. Optimize later. Repeat.</p>
+                <p class="quote">Automate first. Verify everything. Document the result.</p>
             </div>
+        </div>
+
+        <div class="achievement-strip reveal" style="--delay: 120ms;">
+            <span>Cyber Jawara participant</span>
+            <span>Health Hackathon BPJS 2022 participant</span>
         </div>
     </section>
 
@@ -936,21 +1071,30 @@ p {
 
         <div class="grid">
             <div class="card reveal" style="--delay: 80ms;">
-                <span class="card-title">Systems</span>
+                <span class="card-title">Systems & Infrastructure</span>
                 <div class="tag-list">
                     <span class="tag">Linux</span>
+                    <span class="tag">systemd</span>
                     <span class="tag">Bash</span>
                     <span class="tag">Python</span>
-                    <span class="tag">Networking</span>
+                    <span class="tag">Go</span>
+                    <span class="tag">PHP</span>
+                    <span class="tag">Nginx / Apache</span>
+                    <span class="tag">WordPress</span>
                 </div>
             </div>
 
             <div class="card reveal" style="--delay: 150ms;">
-                <span class="card-title">Security & Automation</span>
+                <span class="card-title">Security & Operations</span>
                 <div class="tag-list">
-                    <span class="tag">Reverse Engineering</span>
+                    <span class="tag">Incident Response</span>
+                    <span class="tag">Malware Analysis</span>
+                    <span class="tag">Threat Hunting</span>
+                    <span class="tag">Network Monitoring</span>
+                    <span class="tag">Vulnerability Validation</span>
+                    <span class="tag">Firewall / DNS / TLS</span>
+                    <span class="tag">Cacti / MRTG</span>
                     <span class="tag">Automation</span>
-                    <span class="tag">System Analysis</span>
                 </div>
             </div>
         </div>
@@ -958,9 +1102,35 @@ p {
         <div class="terminal-box reveal" style="--delay: 220ms;">
             <div><span class="prompt">sagiri@parrot:~$</span> <span class="cmd">env --profile</span></div>
             <div class="output">OS: Parrot OS (KDE)</div>
-            <div class="output">Shell: Bash</div>
-            <div class="output">Languages: Python</div>
-            <div class="output">Focus: automation workflows</div>
+            <div class="output">Languages: Bash, Python, Go, PHP</div>
+            <div class="output">Infrastructure: VPS, Nginx, Apache, WordPress, systemd</div>
+            <div class="output">Focus: incident response, monitoring, hardening, automation</div>
+        </div>
+    </section>
+
+    <section class="section reveal" id="experience">
+        <div class="section-header">
+            <h2>Experience</h2>
+        </div>
+
+        <div class="experience-grid">
+            <article class="card reveal" style="--delay: 70ms;">
+                <span class="card-title">NOC / Infrastructure Operations</span>
+                <p class="role-meta">Private infrastructure provider · 2026 — Present</p>
+                <p>Monitor network, hosting, and server environments; perform first-line incident triage; review traffic and availability data; and support DNS, upstream, and infrastructure troubleshooting.</p>
+            </article>
+
+            <article class="card reveal" style="--delay: 130ms;">
+                <span class="card-title">System Analyst</span>
+                <p class="role-meta">Private company · Feb 2024 — Mar 2026</p>
+                <p>Monitored system and network security, performed controlled vulnerability validation, investigated suspicious processes and persistence, and built scripts to support analysis and remediation.</p>
+            </article>
+
+            <article class="card reveal" style="--delay: 190ms;">
+                <span class="card-title">WordPress Developer</span>
+                <p class="role-meta">Insight Marketing Communication · Oct 2019 — Mar 2020</p>
+                <p>Built and optimized WordPress websites with attention to performance, search visibility, interface quality, and maintainable content workflows.</p>
+            </article>
         </div>
     </section>
 
@@ -970,39 +1140,68 @@ p {
         </div>
 
         <div class="grid">
-            <article class="card reveal" style="--delay: 80ms;">
-                <span class="card-title">Security Research Toolkit</span>
-                Collection of automation scripts designed for large-scale data processing, pattern detection, and workflow optimization across multiple targets.
+            <article class="card reveal" style="--delay: 70ms;">
+                <span class="card-title">Linux Incident Evidence Collector</span>
+                A low-impact collection workflow for processes, network connections, authentication logs, systemd units, cron persistence, suspicious files, and hashes during compromised-server triage.
             </article>
 
-            <article class="card reveal" style="--delay: 150ms;">
-                <span class="card-title">Recon Automation</span>
-                Automated data collection and filtering pipelines built to reduce manual effort and improve consistency during target analysis.
+            <article class="card reveal" style="--delay: 130ms;">
+                <span class="card-title">GSocket Threat Assessment</span>
+                Defensive analysis of GSocket and gs-netcat covering behavior, relay infrastructure, host and network indicators, egress controls, containment, and post-compromise recovery.
+            </article>
+
+            <article class="card reveal" style="--delay: 190ms;">
+                <span class="card-title">Controlled Web Security Validation</span>
+                Staging-only validation workflows for authorization boundaries, unsafe file handling, misconfiguration, exposure, evidence capture, and remediation reporting.
+            </article>
+
+            <article class="card reveal" style="--delay: 250ms;">
+                <span class="card-title">Monitoring & Alerting Workflow</span>
+                Operational checks and reporting concepts for Cacti and MRTG data, including outage detection, threshold alerts, escalation, and concise daily traffic summaries.
             </article>
         </div>
     </section>
 
     <section class="section reveal" id="case">
         <div class="section-header">
-            <h2>Work Highlights</h2>
+            <h2>Recent Work</h2>
         </div>
 
-        <article class="card reveal" style="--delay: 70ms;">
-            <span class="card-title">Suspicious Activity Analysis</span>
-            Investigated abnormal system behavior and unexpected resource usage patterns across multiple environments. Identified indicators of unauthorized processes and implemented containment and prevention steps.
-        </article>
+        <div class="recent-work">
+            <article class="work-item reveal" style="--delay: 60ms;">
+                <div class="work-date">July 2026</div>
+                <div class="work-content">
+                    <span class="card-title">Compromised Linux Server Triage</span>
+                    <p>Reviewed server audit bundles, identified suspicious services and persistence indicators, mapped evidence into an incident report, and prepared collection and mitigation steps for recovery.</p>
+                </div>
+            </article>
 
-        <article class="card reveal" style="--delay: 130ms;">
-            <span class="card-title">Web Platform Analysis & Automation</span>
-            Built automation scripts to analyze large sets of web targets and identify structural patterns and misconfigurations. Improved collection efficiency and reduced repetitive manual verification.
-        </article>
+            <article class="work-item reveal" style="--delay: 120ms;">
+                <div class="work-date">July 2026</div>
+                <div class="work-content">
+                    <span class="card-title">Covert Remote-Access Analysis</span>
+                    <p>Produced a defensive assessment of GSocket and gs-netcat, including detection opportunities, relay and egress considerations, containment actions, and post-compromise validation.</p>
+                </div>
+            </article>
 
-        <article class="card reveal" style="--delay: 190ms;">
-            <span class="card-title">Workflow Optimization</span>
-            Developed lightweight scripts to streamline repeated operations, improve execution speed, and increase the reliability of routine technical processes.
-        </article>
+            <article class="work-item reveal" style="--delay: 180ms;">
+                <div class="work-date">July 2026</div>
+                <div class="work-content">
+                    <span class="card-title">Web Security Review & Validation</span>
+                    <p>Reviewed an exposed PHP security agent for unsafe file access and path handling, then documented impact, safe validation methods, and remediation without publishing sensitive implementation details.</p>
+                </div>
+            </article>
 
-        <p class="confidentiality">Some work cannot be shared in detail due to confidentiality.</p>
+            <article class="work-item reveal" style="--delay: 240ms;">
+                <div class="work-date">June–July 2026</div>
+                <div class="work-content">
+                    <span class="card-title">Monitoring & Incident Visibility</span>
+                    <p>Designed practical alerting and daily-report improvements around Cacti and MRTG data to reduce missed outages and make first-line incident escalation more reliable.</p>
+                </div>
+            </article>
+        </div>
+
+        <p class="confidentiality">Descriptions are intentionally generalized to protect company, customer, infrastructure, and incident details.</p>
     </section>
 
     <section class="section reveal" id="contact">
@@ -1022,6 +1221,11 @@ p {
             </button>
         </div>
     </section>
+
+    <footer class="footer">
+        <span class="footer-signature">made with <span class="footer-heart" aria-label="love">&lt;3</span></span>
+        <span class="footer-meta">Jai Pratama<span class="footer-separator" aria-hidden="true">·</span>Last updated July 2026</span>
+    </footer>
 </main>
 
 <div class="toast" id="toast" role="status" aria-live="polite">Email copied to clipboard</div>
@@ -1160,7 +1364,7 @@ p {
 
     if (reduceMotion) {
         typedCommand.textContent = command;
-        terminalOutput.textContent = "Jai Pratama — security research, Linux, and automation";
+        terminalOutput.textContent = "Jai Pratama — Linux, incident response, and automation";
     } else {
         let index = 0;
 
@@ -1173,7 +1377,7 @@ p {
             }
 
             window.setTimeout(() => {
-                terminalOutput.textContent = "Jai Pratama — security research, Linux, and automation";
+                terminalOutput.textContent = "Jai Pratama — Linux, incident response, and automation";
                 terminalCaret.style.display = "none";
             }, 380);
         };
