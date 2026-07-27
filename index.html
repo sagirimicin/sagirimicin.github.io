@@ -3,265 +3,609 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Jai Pratama — Security Researcher focused on automation and system analysis.">
+<meta name="theme-color" content="#282a36">
 <title>Jai Pratama</title>
 
-<!-- FONTS -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <style>
-html { scroll-behavior: smooth; }
-
 :root {
+    --bg: #282a36;
+    --surface: #1e1f29;
+    --surface-soft: rgba(30, 31, 41, 0.72);
+    --current-line: #44475a;
+    --foreground: #f8f8f2;
+    --muted: #b8b8c7;
+    --purple: #bd93f9;
+    --pink: #ff79c6;
+    --cyan: #8be9fd;
+    --green: #50fa7b;
+    --yellow: #f1fa8c;
     --max-width: 1100px;
     --padding-x: clamp(20px, 5vw, 60px);
+    --nav-height: 66px;
+    --radius: 12px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: calc(var(--nav-height) + 24px);
 }
 
 body {
     margin: 0;
-    font-family: 'Inter', sans-serif;
-    background: #282a36;
-    color: #f8f8f2;
-    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+    font-family: "Inter", sans-serif;
+    color: var(--foreground);
+    line-height: 1.65;
+    background:
+        radial-gradient(circle at 12% 10%, rgba(189, 147, 249, 0.09), transparent 28rem),
+        radial-gradient(circle at 88% 35%, rgba(139, 233, 253, 0.07), transparent 30rem),
+        var(--bg);
 }
 
-/* NAVBAR */
+body.menu-open {
+    overflow: hidden;
+}
+
+button,
+a {
+    -webkit-tap-highlight-color: transparent;
+}
+
+a {
+    color: inherit;
+}
+
+::selection {
+    color: var(--bg);
+    background: var(--pink);
+}
+
+.scroll-progress {
+    position: fixed;
+    inset: 0 auto auto 0;
+    z-index: 1000;
+    width: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--purple), var(--pink), var(--cyan));
+    box-shadow: 0 0 14px rgba(255, 121, 198, 0.55);
+}
+
 .navbar {
     position: fixed;
-    top: 0;
-    width: 100%;
-    background: #282a36;
-    border-bottom: 1px solid #44475a;
-    z-index: 100;
+    inset: 0 0 auto;
+    z-index: 900;
+    min-height: var(--nav-height);
+    border-bottom: 1px solid rgba(68, 71, 90, 0.8);
+    background: rgba(40, 42, 54, 0.72);
+    backdrop-filter: blur(16px) saturate(135%);
+    -webkit-backdrop-filter: blur(16px) saturate(135%);
+    transition: box-shadow 180ms ease, background 180ms ease;
+}
+
+.navbar.scrolled {
+    background: rgba(40, 42, 54, 0.9);
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.22);
 }
 
 .nav-inner {
-    max-width: var(--max-width);
-    margin: auto;
-    padding: 15px var(--padding-x);
+    position: relative;
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
+    width: min(100%, calc(var(--max-width) + (var(--padding-x) * 2)));
+    min-height: var(--nav-height);
+    margin-inline: auto;
+    padding-inline: var(--padding-x);
 }
 
-/* LOGO */
 .logo {
-    font-family: 'JetBrains Mono', monospace;
-    color: #50fa7b;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--green);
+    font-family: "JetBrains Mono", monospace;
     font-size: 14px;
-    letter-spacing: 1px;
-    cursor: pointer;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    transition: color 180ms ease, transform 180ms ease;
+}
+
+.logo::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 12px rgba(80, 250, 123, 0.75);
 }
 
 .logo:hover {
-    color: #8be9fd;
+    color: var(--cyan);
+    transform: translateY(-1px);
 }
 
-/* NAV LINKS */
 .nav-right {
     display: flex;
+    align-items: center;
     gap: 24px;
 }
 
 .nav-right a {
-    color: #8be9fd;
-    text-decoration: none;
+    position: relative;
+    padding-block: 8px;
+    color: var(--cyan);
     font-size: 14px;
-    transition: 0.2s;
-}
-
-.nav-right a:hover {
-    color: #ff79c6;
-}
-
-.navbar a {
-    color: #8be9fd;
+    font-weight: 500;
     text-decoration: none;
-    font-size: 14px;
+    transition: color 180ms ease;
 }
 
-.navbar a.active {
-    color: #ff79c6;
+.nav-right a::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    bottom: 2px;
+    left: 0;
+    height: 2px;
+    border-radius: 99px;
+    background: var(--pink);
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 180ms ease;
 }
 
-/* CONTAINER */
+.nav-right a:hover,
+.nav-right a.active {
+    color: var(--pink);
+}
+
+.nav-right a:hover::after,
+.nav-right a.active::after {
+    transform: scaleX(1);
+}
+
+.menu-toggle {
+    display: none;
+    width: 42px;
+    height: 42px;
+    padding: 0;
+    border: 1px solid var(--current-line);
+    border-radius: 10px;
+    color: var(--cyan);
+    background: transparent;
+    cursor: pointer;
+}
+
+.menu-toggle svg {
+    width: 22px;
+    height: 22px;
+}
+
 .container {
-    max-width: var(--max-width);
-    margin: auto;
-    padding: 0 var(--padding-x);
+    width: min(100%, calc(var(--max-width) + (var(--padding-x) * 2)));
+    margin-inline: auto;
+    padding-inline: var(--padding-x);
 }
 
-/* HERO */
 .hero {
-    height: 90vh;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.hero h1 {
-    font-size: clamp(42px, 8vw, 72px);
-    font-weight: 650;
-    letter-spacing: -2px;
-    margin: 0;
-    color: #bd93f9;
-}
-
-.hero p {
-    font-size: clamp(16px, 2vw, 20px);
-    color: #8be9fd;
-    margin-top: 10px;
+    min-height: 100svh;
+    padding-top: var(--nav-height);
+    align-items: center;
 }
 
 .hero-grid {
     display: grid;
-    grid-template-columns: 1.2fr 0.8fr;
+    grid-template-columns: minmax(0, 1.2fr) minmax(250px, 0.8fr);
+    width: 100%;
     align-items: center;
-    gap: 60px;
+    gap: clamp(42px, 7vw, 84px);
 }
 
-/* TEXT FIX */
-.hero-text p {
-    max-width: 500px;
+.eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    margin: 0 0 14px;
+    color: var(--green);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 13px;
 }
 
-/* IMAGE */
+.eyebrow::before {
+    content: "";
+    width: 24px;
+    height: 1px;
+    background: currentColor;
+}
+
+.hero h1 {
+    margin: 0;
+    color: var(--purple);
+    font-size: clamp(48px, 7vw, 82px);
+    font-weight: 680;
+    line-height: 0.98;
+    letter-spacing: -0.055em;
+}
+
+.hero-copy {
+    max-width: 640px;
+    margin: 22px 0 0;
+    color: var(--foreground);
+    font-size: clamp(18px, 2vw, 24px);
+    line-height: 1.35;
+    letter-spacing: -0.02em;
+}
+
+.hero-subcopy {
+    max-width: 580px;
+    margin: 14px 0 0;
+    color: var(--muted);
+    font-size: clamp(14px, 1.5vw, 17px);
+}
+
+.hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 26px;
+}
+
+.button {
+    display: inline-flex;
+    min-height: 44px;
+    padding: 0 18px;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: 1px solid var(--current-line);
+    border-radius: 10px;
+    color: var(--foreground);
+    background: rgba(30, 31, 41, 0.58);
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: transform 180ms ease, border-color 180ms ease, color 180ms ease, background 180ms ease;
+}
+
+.button.primary {
+    border-color: rgba(189, 147, 249, 0.75);
+    color: var(--bg);
+    background: var(--purple);
+}
+
+.button:hover {
+    transform: translateY(-2px);
+    border-color: var(--pink);
+    color: var(--pink);
+}
+
+.button.primary:hover {
+    color: var(--bg);
+    background: var(--pink);
+}
+
+.terminal-window {
+    max-width: 600px;
+    margin-top: 30px;
+    overflow: hidden;
+    border: 1px solid rgba(68, 71, 90, 0.95);
+    border-radius: var(--radius);
+    background: rgba(30, 31, 41, 0.88);
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.22);
+}
+
+.terminal-titlebar {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    min-height: 38px;
+    padding: 0 13px;
+    align-items: center;
+    border-bottom: 1px solid var(--current-line);
+    background: rgba(68, 71, 90, 0.35);
+}
+
+.terminal-dots {
+    display: flex;
+    gap: 7px;
+}
+
+.terminal-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+}
+
+.terminal-dot:nth-child(1) { background: #ff5555; }
+.terminal-dot:nth-child(2) { background: var(--yellow); }
+.terminal-dot:nth-child(3) { background: var(--green); }
+
+.terminal-title {
+    color: var(--muted);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    text-align: center;
+}
+
+.terminal-body {
+    min-height: 92px;
+    padding: 16px 18px;
+    color: var(--foreground);
+    font-family: "JetBrains Mono", monospace;
+    font-size: clamp(12px, 1.3vw, 14px);
+}
+
+.prompt {
+    color: var(--green);
+}
+
+.command {
+    color: var(--foreground);
+}
+
+.terminal-output {
+    min-height: 24px;
+    margin-top: 7px;
+    color: var(--cyan);
+}
+
+.caret {
+    display: inline-block;
+    width: 8px;
+    height: 1.15em;
+    margin-left: 3px;
+    vertical-align: -0.15em;
+    background: var(--green);
+    animation: blink 1s steps(1) infinite;
+}
+
+@keyframes blink {
+    50% { opacity: 0; }
+}
+
 .hero-image {
+    position: relative;
     display: flex;
     justify-content: center;
+    isolation: isolate;
+}
+
+.hero-image::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    width: min(85%, 300px);
+    aspect-ratio: 1;
+    border-radius: 32% 68% 60% 40% / 42% 35% 65% 58%;
+    background: linear-gradient(145deg, rgba(189, 147, 249, 0.48), rgba(255, 121, 198, 0.2), rgba(139, 233, 253, 0.34));
+    filter: blur(24px);
+    opacity: 0.55;
+    animation: blob 10s ease-in-out infinite alternate;
+}
+
+.hero-image-frame {
+    position: relative;
+    padding: 8px;
+    border: 1px solid rgba(189, 147, 249, 0.42);
+    border-radius: 24px;
+    background: linear-gradient(145deg, rgba(189, 147, 249, 0.11), rgba(139, 233, 253, 0.05));
+    box-shadow: 0 22px 60px rgba(0, 0, 0, 0.3);
+    transform: rotate(1.5deg);
+    transition: transform 250ms ease, border-color 250ms ease;
+}
+
+.hero-image-frame:hover {
+    border-color: var(--pink);
+    transform: rotate(0deg) translateY(-4px);
 }
 
 .hero-image img {
-    width: 260px;
-    height: 260px;
+    display: block;
+    width: clamp(220px, 28vw, 300px);
+    aspect-ratio: 1;
+    border-radius: 18px;
     object-fit: cover;
-    border-radius: 12px;
-    border: 1px solid #44475a;
-    transition: 0.3s;
 }
 
-.hero-image img:hover {
-    transform: scale(1.03);
-    border-color: #bd93f9;
+@keyframes blob {
+    from { transform: translate(-10px, -6px) rotate(0deg) scale(0.96); }
+    to { transform: translate(10px, 8px) rotate(8deg) scale(1.04); }
 }
 
-/* TERMINAL */
-.terminal {
-    margin-top: 20px;
-    font-family: 'JetBrains Mono', monospace;
+.section {
+    position: relative;
+    padding-block: clamp(74px, 10vw, 120px);
+    border-top: 1px solid rgba(68, 71, 90, 0.75);
+    scroll-margin-top: calc(var(--nav-height) + 24px);
+}
+
+.section-header {
+    display: flex;
+    margin-bottom: clamp(26px, 4vw, 42px);
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.section h2 {
+    margin: 0;
+    color: var(--foreground);
+    font-size: clamp(28px, 3.5vw, 40px);
+    font-weight: 650;
+    line-height: 1.1;
+    letter-spacing: -0.04em;
+}
+
+.section-number {
+    color: var(--pink);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(18px, 3vw, 32px);
+}
+
+p {
+    max-width: 650px;
+}
+
+.muted {
+    color: var(--muted);
+}
+
+.quote {
+    padding-left: 16px;
+    border-left: 2px solid var(--pink);
+    color: var(--cyan);
+    font-family: "JetBrains Mono", monospace;
     font-size: 14px;
-    color: #50fa7b;
+}
+
+.card {
+    --mouse-x: 50%;
+    --mouse-y: 50%;
+    position: relative;
+    overflow: hidden;
+    padding: clamp(20px, 2.5vw, 26px);
+    border: 1px solid rgba(68, 71, 90, 0.95);
+    border-radius: var(--radius);
+    background: var(--surface-soft);
+    box-shadow: 0 16px 38px rgba(0, 0, 0, 0.08);
+    transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
+}
+
+.card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(420px circle at var(--mouse-x) var(--mouse-y), rgba(189, 147, 249, 0.13), transparent 42%);
+    opacity: 0;
+    transition: opacity 220ms ease;
+}
+
+.card:hover {
+    border-color: rgba(189, 147, 249, 0.75);
+    box-shadow: 0 22px 55px rgba(0, 0, 0, 0.18);
+    transform: translateY(-5px);
+}
+
+.card:hover::before {
+    opacity: 1;
+}
+
+.card > * {
+    position: relative;
+}
+
+.card-title {
+    display: block;
+    margin-bottom: 12px;
+    color: var(--purple);
+    font-size: 17px;
+    font-weight: 650;
+}
+
+.card + .card {
+    margin-top: 18px;
+}
+
+.grid .card + .card {
+    margin-top: 0;
+}
+
+.tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+}
+
+.tag {
+    display: inline-flex;
+    min-height: 31px;
+    padding: 4px 11px;
+    align-items: center;
+    border: 1px solid rgba(80, 250, 123, 0.13);
+    border-radius: 999px;
+    color: var(--green);
+    background: rgba(68, 71, 90, 0.68);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px;
 }
 
 .terminal-box {
     margin-top: 25px;
-    background: #1e1f29;
-    border: 1px solid #44475a;
-    border-radius: 8px;
-    padding: 15px;
-    font-family: 'JetBrains Mono', monospace;
+    padding: 17px 18px;
+    border: 1px solid var(--current-line);
+    border-radius: var(--radius);
+    color: var(--foreground);
+    background: rgba(30, 31, 41, 0.85);
+    font-family: "JetBrains Mono", monospace;
     font-size: 13px;
-}
-
-.prompt {
-    color: #50fa7b;
+    box-shadow: 0 16px 38px rgba(0, 0, 0, 0.1);
 }
 
 .cmd {
-    color: #f8f8f2;
+    color: var(--foreground);
 }
 
 .output {
-    color: #8be9fd;
-    margin-top: 4px;
+    margin-top: 5px;
+    color: var(--cyan);
 }
 
-/* SECTIONS */
-.section {
-    padding: clamp(60px, 10vw, 120px) 0;
-    border-top: 1px solid #44475a;
+.confidentiality {
+    margin-top: 20px;
+    color: var(--muted);
+    font-size: 13px;
 }
 
-.section h2 {
-    font-size: clamp(24px, 3vw, 32px);
-    font-weight: 600;
-    letter-spacing: -1px;
-    margin-bottom: 30px;
-}
-
-/* GRID */
-.grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
-}
-
-@media(max-width: 800px) {
-    .grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-/* TEXT */
-p {
-    max-width: 600px;
-}
-
-/* CARD */
-.card {
-    padding: 20px;
-    border: 1px solid #44475a;
-    border-radius: 8px;
-    transition: 0.3s;
-}
-
-.card:hover {
-    transform: translateY(-3px);
-    border-color: #bd93f9;
-}
-
-/* TAG */
-.tag {
-    display: inline-block;
-    background: #44475a;
-    color: #50fa7b;
-    padding: 4px 10px;
-    margin: 4px;
-    border-radius: 6px;
-}
-
-/* FADE-IN */
-.fade {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.6s ease;
-}
-
-.fade.show {
-    opacity: 1;
-    transform: translateY(0);
+.contact-copy {
+    max-width: 520px;
+    color: var(--muted);
 }
 
 .contact-icons {
     display: flex;
-    gap: 20px;
-    margin-top: 20px;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 24px;
 }
 
 .icon {
-    width: 45px;
-    height: 45px;
-    display: flex;
+    position: relative;
+    display: inline-flex;
+    width: 48px;
+    height: 48px;
+    padding: 0;
     align-items: center;
     justify-content: center;
-    border: 1px solid #44475a;
-    border-radius: 8px;
-    transition: 0.3s;
-    color: #8be9fd;
+    border: 1px solid var(--current-line);
+    border-radius: 12px;
+    color: var(--cyan);
+    background: rgba(30, 31, 41, 0.62);
+    cursor: pointer;
+    transition: color 180ms ease, border-color 180ms ease, transform 180ms ease, background 180ms ease;
 }
 
 .icon:hover {
-    color: #ff79c6;
-    border-color: #ff79c6;
+    color: var(--pink);
+    border-color: var(--pink);
+    background: rgba(255, 121, 198, 0.07);
     transform: translateY(-3px);
 }
 
@@ -270,11 +614,119 @@ p {
     height: 22px;
 }
 
-/* MOBILE */
-@media(max-width: 900px) {
+.icon::after {
+    content: attr(data-label);
+    position: absolute;
+    bottom: -34px;
+    left: 50%;
+    z-index: 5;
+    padding: 4px 8px;
+    border: 1px solid var(--current-line);
+    border-radius: 7px;
+    color: var(--foreground);
+    background: var(--surface);
+    font-size: 11px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, 4px);
+    transition: opacity 160ms ease, transform 160ms ease;
+}
+
+.icon:hover::after,
+.icon:focus-visible::after {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+
+.reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 620ms ease, transform 620ms cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--delay, 0ms);
+}
+
+.reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    z-index: 1100;
+    padding: 11px 16px;
+    border: 1px solid rgba(80, 250, 123, 0.4);
+    border-radius: 10px;
+    color: var(--green);
+    background: rgba(30, 31, 41, 0.95);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px;
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.28);
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, 18px);
+    transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+
+.back-to-top {
+    position: fixed;
+    right: 22px;
+    bottom: 22px;
+    z-index: 800;
+    display: grid;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    place-items: center;
+    border: 1px solid var(--current-line);
+    border-radius: 12px;
+    color: var(--cyan);
+    background: rgba(30, 31, 41, 0.9);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.22);
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(10px);
+    transition: opacity 180ms ease, transform 180ms ease, color 180ms ease, border-color 180ms ease;
+}
+
+.back-to-top.visible {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+.back-to-top:hover {
+    color: var(--pink);
+    border-color: var(--pink);
+}
+
+.back-to-top svg {
+    width: 20px;
+    height: 20px;
+}
+
+:focus-visible {
+    outline: 2px solid var(--pink);
+    outline-offset: 4px;
+}
+
+@media (max-width: 900px) {
+    .hero {
+        min-height: auto;
+        padding-block: calc(var(--nav-height) + 70px) 90px;
+    }
+
     .hero-grid {
         grid-template-columns: 1fr;
-        gap: 30px;
+        gap: 52px;
     }
 
     .hero-image {
@@ -282,282 +734,453 @@ p {
     }
 
     .hero-image img {
-        width: 200px;
-        height: 200px;
+        width: min(70vw, 260px);
     }
 }
 
+@media (max-width: 760px) {
+    .menu-toggle {
+        display: inline-grid;
+        place-items: center;
+    }
+
+    .nav-right {
+        position: absolute;
+        top: calc(100% + 1px);
+        right: var(--padding-x);
+        left: var(--padding-x);
+        display: grid;
+        gap: 4px;
+        padding: 10px;
+        border: 1px solid var(--current-line);
+        border-radius: 12px;
+        background: rgba(30, 31, 41, 0.98);
+        box-shadow: 0 22px 50px rgba(0, 0, 0, 0.32);
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(-8px);
+        transition: opacity 180ms ease, transform 180ms ease;
+    }
+
+    .nav-right.open {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateY(0);
+    }
+
+    .nav-right a {
+        padding: 11px 12px;
+        border-radius: 8px;
+    }
+
+    .nav-right a::after {
+        display: none;
+    }
+
+    .nav-right a:hover,
+    .nav-right a.active {
+        background: rgba(255, 121, 198, 0.07);
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .section-header {
+        align-items: flex-end;
+    }
+}
+
+@media (max-width: 480px) {
+    :root {
+        --padding-x: 18px;
+    }
+
+    .hero h1 {
+        font-size: clamp(43px, 15vw, 60px);
+    }
+
+    .hero-actions {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .button {
+        width: 100%;
+    }
+
+    .hero-image-frame {
+        width: 100%;
+    }
+
+    .hero-image img {
+        width: 100%;
+    }
+
+    .back-to-top {
+        right: 14px;
+        bottom: 14px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    .reveal {
+        opacity: 1;
+        transform: none;
+    }
+}
 </style>
 </head>
 
-<body>
+<body id="top">
+<div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
 
-<!-- NAV -->
-<div class="navbar">
-  <div class="nav-inner">
+<header class="navbar" id="navbar">
+    <nav class="nav-inner" aria-label="Primary navigation">
+        <a class="logo" href="#top">root@sagiri:~#</a>
 
-    <span class="logo">root@sagiri:~#</span>
+        <button class="menu-toggle" id="menuToggle" type="button" aria-label="Open navigation" aria-controls="navLinks" aria-expanded="false">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path fill="currentColor" d="M4 7h16v2H4zm0 8h16v2H4z"/>
+            </svg>
+        </button>
 
-    <div class="nav-right">
-      <a href="#about">About</a>
-      <a href="#skills">Skills</a>
-      <a href="#projects">Projects</a>
-      <a href="#experience">Experience</a>
-      <a href="#case">Highlights</a>
-      <a href="#contact">Contact</a>
-    </div>
+        <div class="nav-right" id="navLinks">
+            <a href="#about">About</a>
+            <a href="#skills">Skills</a>
+            <a href="#projects">Projects</a>
+            <a href="#case">Highlights</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+</header>
 
-  </div>
-</div>
+<main class="container">
+    <section class="hero" aria-labelledby="heroTitle">
+        <div class="hero-grid">
+            <div class="hero-text reveal visible">
+                <p class="eyebrow">Available for technical collaboration</p>
+                <h1 id="heroTitle">Jai Pratama</h1>
+                <p class="hero-copy">Security Researcher focused on automation and system analysis.</p>
+                <p class="hero-subcopy">I build practical, automation-driven workflows for security operations, Linux systems, and technical analysis.</p>
 
-<div class="container">
+                <div class="hero-actions">
+                    <a class="button primary" href="#projects">View projects</a>
+                    <a class="button" href="https://github.com/sagirimicin" target="_blank" rel="noopener noreferrer">GitHub</a>
+                </div>
 
-<!-- HERO -->
-<div class="hero">
+                <div class="terminal-window" aria-label="Animated terminal introduction">
+                    <div class="terminal-titlebar">
+                        <div class="terminal-dots" aria-hidden="true">
+                            <span class="terminal-dot"></span>
+                            <span class="terminal-dot"></span>
+                            <span class="terminal-dot"></span>
+                        </div>
+                        <span class="terminal-title">sagiri@parrot: ~</span>
+                        <span></span>
+                    </div>
+                    <div class="terminal-body">
+                        <div><span class="prompt">sagiri@parrot:~$</span> <span class="command" id="typedCommand"></span><span class="caret" id="terminalCaret"></span></div>
+                        <div class="terminal-output" id="terminalOutput" aria-live="polite"></div>
+                    </div>
+                </div>
+            </div>
 
-<div class="hero-grid">
+            <div class="hero-image reveal visible" style="--delay: 120ms;">
+                <div class="hero-image-frame">
+                    <img src="https://github.com/sagirimicin.png" alt="Jai Pratama profile photo" loading="eager" decoding="async">
+                </div>
+            </div>
+        </div>
+    </section>
 
-<div class="hero-text">
-<h1>Jai Pratama</h1>
-<p>Security Researcher focused on automation & system analysis</p>
-<p>Focused on building automation-driven workflows for security and system analysis</p>
+    <section class="section reveal" id="about">
+        <div class="section-header">
+            <h2>About</h2>
+        </div>
 
-<div class="terminal">
-root@sagiri:~# whoami<br>
-Jai Pratama - automation focused
-</div>
-</div>
+        <div class="grid">
+            <div>
+                <p>I build tools and workflows to automate complex processes and reduce manual effort. My focus is on scripting, system analysis, and handling data at scale.</p>
+                <p class="muted">I prefer working close to the system level using Bash, Python, and native Linux tools, keeping solutions fast, lightweight, and controllable.</p>
+            </div>
 
-<div class="hero-image">
-<img src="https://github.com/sagirimicin.png" alt="profile">
-</div>
+            <div>
+                <ul>
+                    <li>Automation of repetitive security workflows</li>
+                    <li>System and network behavior analysis</li>
+                    <li>Efficient scripting for real-world usage</li>
+                </ul>
+                <p class="quote">Automate first. Optimize later. Repeat.</p>
+            </div>
+        </div>
+    </section>
 
-</div>
+    <section class="section reveal" id="skills">
+        <div class="section-header">
+            <h2>Skills</h2>
+        </div>
 
-</div>
+        <div class="grid">
+            <div class="card reveal" style="--delay: 80ms;">
+                <span class="card-title">Systems</span>
+                <div class="tag-list">
+                    <span class="tag">Linux</span>
+                    <span class="tag">Bash</span>
+                    <span class="tag">Python</span>
+                    <span class="tag">Networking</span>
+                </div>
+            </div>
 
-<!-- ABOUT -->
-<section class="section fade" id="experience">
-<h2>Experience</h2>
+            <div class="card reveal" style="--delay: 150ms;">
+                <span class="card-title">Security & Automation</span>
+                <div class="tag-list">
+                    <span class="tag">Reverse Engineering</span>
+                    <span class="tag">Automation</span>
+                    <span class="tag">System Analysis</span>
+                </div>
+            </div>
+        </div>
 
-<div class="grid">
+        <div class="terminal-box reveal" style="--delay: 220ms;">
+            <div><span class="prompt">sagiri@parrot:~$</span> <span class="cmd">env --profile</span></div>
+            <div class="output">OS: Parrot OS (KDE)</div>
+            <div class="output">Shell: Bash</div>
+            <div class="output">Languages: Python</div>
+            <div class="output">Focus: automation workflows</div>
+        </div>
+    </section>
 
-<div class="card">
-<b>System Analyst</b><br>
-<span style="color:#aaa; font-size:14px;">Private Company · 2024 — 2026</span><br><br>
+    <section class="section reveal" id="projects">
+        <div class="section-header">
+            <h2>Projects</h2>
+        </div>
 
-Worked on monitoring and securing systems and network infrastructure,
-focusing on threat detection and system reliability.<br><br>
+        <div class="grid">
+            <article class="card reveal" style="--delay: 80ms;">
+                <span class="card-title">Security Research Toolkit</span>
+                Collection of automation scripts designed for large-scale data processing, pattern detection, and workflow optimization across multiple targets.
+            </article>
 
-- Analyzed system and network behavior<br>  
-- Performed controlled security testing<br>  
-- Simulated attack scenarios to identify weaknesses<br>  
-</div>
+            <article class="card reveal" style="--delay: 150ms;">
+                <span class="card-title">Recon Automation</span>
+                Automated data collection and filtering pipelines built to reduce manual effort and improve consistency during target analysis.
+            </article>
+        </div>
+    </section>
 
-<div class="card">
-<b>WordPress Developer</b><br>
-<span style="color:#aaa; font-size:14px;">Insight Marketing Communication · 2019 — 2020</span><br><br>
+    <section class="section reveal" id="case">
+        <div class="section-header">
+            <h2>Work Highlights</h2>
+        </div>
 
-Built and optimized websites with focus on performance and user engagement.<br><br>
+        <article class="card reveal" style="--delay: 70ms;">
+            <span class="card-title">Suspicious Activity Analysis</span>
+            Investigated abnormal system behavior and unexpected resource usage patterns across multiple environments. Identified indicators of unauthorized processes and implemented containment and prevention steps.
+        </article>
 
-- Improved website traffic and SEO performance<br>  
-- Designed user-friendly interfaces<br>  
-</div>
+        <article class="card reveal" style="--delay: 130ms;">
+            <span class="card-title">Web Platform Analysis & Automation</span>
+            Built automation scripts to analyze large sets of web targets and identify structural patterns and misconfigurations. Improved collection efficiency and reduced repetitive manual verification.
+        </article>
 
-</div>
+        <article class="card reveal" style="--delay: 190ms;">
+            <span class="card-title">Workflow Optimization</span>
+            Developed lightweight scripts to streamline repeated operations, improve execution speed, and increase the reliability of routine technical processes.
+        </article>
 
-</section>
+        <p class="confidentiality">Some work cannot be shared in detail due to confidentiality.</p>
+    </section>
 
-<section class="section fade" id="about">
-<h2>About</h2>
+    <section class="section reveal" id="contact">
+        <div class="section-header">
+            <h2>Contact</h2>
+        </div>
 
-<div class="grid">
+        <p class="contact-copy">The easiest way to reach me is through email or GitHub. Use the email button to copy my address.</p>
 
-<div>
-<p>
-I build tools and workflows to automate complex processes and reduce manual effort.
-My focus is on scripting, system analysis, and handling data at scale.
-</p>
+        <div class="contact-icons">
+            <a href="https://github.com/sagirimicin" target="_blank" rel="noopener noreferrer" class="icon" data-label="GitHub" aria-label="Open GitHub profile">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 0C5.37 0 0 5.37 0 12a12 12 0 008.2 11.38c.6.11.82-.26.82-.58v-2.02c-3.34.73-4.04-1.61-4.04-1.61-.55-1.38-1.34-1.74-1.34-1.74-1.1-.75.08-.74.08-.74 1.21.09 1.85 1.24 1.85 1.24 1.08 1.85 2.84 1.32 3.53 1 .11-.78.42-1.32.76-1.62-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.17 0 0 1.01-.32 3.3 1.23a11.52 11.52 0 016 0C17.34 6.3 18.35 6.62 18.35 6.62c.66 1.65.24 2.87.12 3.17.77.84 1.24 1.91 1.24 3.22 0 4.61-2.8 5.63-5.48 5.93.43.37.81 1.1.81 2.22v3.29c0 .32.21.7.82.58A12 12 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+            </a>
 
-<p>
-I prefer working close to the system level using Bash, Python, and native Linux tools,
-keeping things fast and controllable.
-</p>
-</div>
+            <button class="icon" id="emailButton" type="button" data-label="Copy email" aria-label="Copy email address">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2m0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+            </button>
+        </div>
+    </section>
+</main>
 
-<div>
-<ul>
-<li>Automation of repetitive security workflows</li>
-<li>System and network behavior analysis</li>
-<li>Efficient scripting for real-world usage</li>
-</ul>
+<div class="toast" id="toast" role="status" aria-live="polite">Email copied to clipboard</div>
 
-<p><i>Automate first. Optimize later. Repeat.</i></p>
-</div>
-
-</div>
-</section>
-
-<!-- SKILLS -->
-<section class="section fade" id="skills">
-<h2>Skills</h2>
-
-<div class="grid">
-<div class="card">
-<span class="tag">Linux</span>
-<span class="tag">Bash</span>
-<span class="tag">Python</span>
-<span class="tag">Networking</span>
-</div>
-
-<div class="card">
-<span class="tag">Reverse Engineering</span>
-<span class="tag">Automation</span>
-<span class="tag">System Analysis</span>
-</div>
-</div>
-
-<!-- TERMINAL ENVIRONMENT -->
-<div class="terminal-box">
-<div><span class="prompt">root@jai:~#</span> <span class="cmd">env --profile</span></div>
-<div class="output">OS: Parrot OS (KDE)</div>
-<div class="output">Shell: Bash</div>
-<div class="output">Languages: Python</div>
-<div class="output">Focus: automation workflows</div>
-</div>
-
-</section>
-
-<!-- PROJECTS -->
-<section class="section fade" id="projects">
-<h2>Projects</h2>
-
-<div class="grid">
-
-<div class="card">
-<b>Security Research Toolkit</b><br><br>
-Collection of automation scripts designed for large-scale data processing,
-pattern detection, and workflow optimization across multiple targets.
-</div>
-
-<div class="card">
-<b>Recon Automation</b><br><br>
-Automated data collection and filtering pipelines to reduce manual effort
-and improve consistency in target analysis.
-</div>
-
-</div>
-
-</section>
-
-<!-- CASE -->
-<section class="section fade" id="case">
-<h2>Work Highlights</h2>
-
-<div class="card">
-<b>Suspicious Activity Analysis</b><br><br>
-Investigated abnormal system behavior and unexpected resource usage patterns across multiple environments.<br><br>
-Identified indicators of unauthorized processes and implemented steps to contain and prevent recurrence.<br><br>
-<i>Focused on detection, analysis, and system integrity.</i>
-</div>
-
-<div class="card">
-<b>Web Platform Analysis & Automation</b><br><br>
-Built automation scripts to analyze large sets of web targets and identify common structural patterns and misconfigurations.<br><br>
-Improved efficiency of data collection and reduced manual verification work significantly.<br><br>
-<i>Designed for scale, consistency, and structured output.</i>
-</div>
-
-<div class="card">
-<b>Workflow Optimization</b><br><br>
-Improved efficiency and reduced manual workload across repeated operations.<br><br>
-Developed lightweight scripts to streamline repetitive tasks and improve execution speed across multiple processes.<br><br>
-Reduced manual effort and increased reliability of routine operations.
-</div>
-
-<p style="margin-top:20px; color:#aaa; font-size:14px;">
-Some work cannot be shared in detail due to confidentiality.
-</p>
-
-</section>
-
-<!-- CONTACT -->
-<section class="section fade" id="contact">
-<h2>Contact</h2>
-
-<div class="contact-icons">
-
-<!-- GITHUB -->
-<a href="https://github.com/sagirimicin" target="_blank" class="icon">
-<svg viewBox="0 0 24 24"><path fill="currentColor"
-d="M12 0C5.37 0 0 5.37 0 12a12 12 0 008.2 11.38c.6.11.82-.26.82-.58v-2.02c-3.34.73-4.04-1.61-4.04-1.61-.55-1.38-1.34-1.74-1.34-1.74-1.1-.75.08-.74.08-.74 1.21.09 1.85 1.24 1.85 1.24 1.08 1.85 2.84 1.32 3.53 1 .11-.78.42-1.32.76-1.62-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.17 0 0 1.01-.32 3.3 1.23a11.52 11.52 0 016 0C17.34 6.3 18.35 6.62 18.35 6.62c.66 1.65.24 2.87.12 3.17.77.84 1.24 1.91 1.24 3.22 0 4.61-2.8 5.63-5.48 5.93.43.37.81 1.1.81 2.22v3.29c0 .32.21.7.82.58A12 12 0 0024 12c0-6.63-5.37-12-12-12z"/>
-</svg>
-</a>
-
-<!-- EMAIL BUTTON -->
-<button class="icon" onclick="copyEmail()" id="emailBtn">
-<svg viewBox="0 0 24 24"><path fill="currentColor"
-d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2m0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-</svg>
+<button class="back-to-top" id="backToTop" type="button" aria-label="Back to top">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="m12 8 6 6-1.4 1.4-4.6-4.6-4.6 4.6L6 14z"/></svg>
 </button>
 
-</div>
-
-<p id="copyMsg" style="margin-top:10px; color:#50fa7b; font-size:14px; display:none;">
-Email copied to clipboard
-</p>
-
-</section>
-
-</div>
-
 <script>
-function copyEmail() {
+(() => {
+    "use strict";
+
     const email = "firzaanonymous@gmail.com";
+    const navbar = document.getElementById("navbar");
+    const progress = document.getElementById("scrollProgress");
+    const backToTop = document.getElementById("backToTop");
+    const menuToggle = document.getElementById("menuToggle");
+    const navLinksContainer = document.getElementById("navLinks");
+    const navLinks = [...document.querySelectorAll('.nav-right a[href^="#"]')];
+    const sections = [...document.querySelectorAll("main section[id]")];
+    const toast = document.getElementById("toast");
+    const emailButton = document.getElementById("emailButton");
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    navigator.clipboard.writeText(email).then(() => {
-        const msg = document.getElementById("copyMsg");
-        msg.style.display = "block";
+    function updateScrollUI() {
+        const scrollTop = window.scrollY;
+        const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+        const percentage = scrollable > 0 ? (scrollTop / scrollable) * 100 : 0;
 
-        setTimeout(() => {
-            msg.style.display = "none";
-        }, 2000);
+        progress.style.width = `${Math.min(100, Math.max(0, percentage))}%`;
+        navbar.classList.toggle("scrolled", scrollTop > 10);
+        backToTop.classList.toggle("visible", scrollTop > 600);
+    }
+
+    window.addEventListener("scroll", updateScrollUI, { passive: true });
+    updateScrollUI();
+
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target);
+        });
+    }, { threshold: 0.12, rootMargin: "0px 0px -45px" });
+
+    document.querySelectorAll(".reveal:not(.visible)").forEach(element => revealObserver.observe(element));
+
+    const activeObserver = new IntersectionObserver(entries => {
+        const visible = entries
+            .filter(entry => entry.isIntersecting)
+            .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+        if (!visible) return;
+
+        navLinks.forEach(link => {
+            link.classList.toggle("active", link.getAttribute("href") === `#${visible.target.id}`);
+        });
+    }, {
+        rootMargin: `-${parseInt(getComputedStyle(document.documentElement).getPropertyValue("--nav-height"), 10) + 20}px 0px -55%`,
+        threshold: [0.08, 0.2, 0.45]
     });
-}
+
+    sections.forEach(section => activeObserver.observe(section));
+
+    function closeMenu() {
+        navLinksContainer.classList.remove("open");
+        menuToggle.setAttribute("aria-expanded", "false");
+        menuToggle.setAttribute("aria-label", "Open navigation");
+        document.body.classList.remove("menu-open");
+    }
+
+    menuToggle.addEventListener("click", () => {
+        const willOpen = !navLinksContainer.classList.contains("open");
+        navLinksContainer.classList.toggle("open", willOpen);
+        menuToggle.setAttribute("aria-expanded", String(willOpen));
+        menuToggle.setAttribute("aria-label", willOpen ? "Close navigation" : "Open navigation");
+        document.body.classList.toggle("menu-open", willOpen);
+    });
+
+    navLinks.forEach(link => link.addEventListener("click", closeMenu));
+
+    document.addEventListener("keydown", event => {
+        if (event.key === "Escape") closeMenu();
+    });
+
+    window.addEventListener("resize", () => {
+        if (window.innerWidth > 760) closeMenu();
+    });
+
+    backToTop.addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
+    });
+
+    document.querySelectorAll(".card").forEach(card => {
+        card.addEventListener("pointermove", event => {
+            const rect = card.getBoundingClientRect();
+            card.style.setProperty("--mouse-x", `${event.clientX - rect.left}px`);
+            card.style.setProperty("--mouse-y", `${event.clientY - rect.top}px`);
+        });
+    });
+
+    let toastTimer;
+
+    function showToast(message) {
+        toast.textContent = message;
+        toast.classList.add("show");
+        window.clearTimeout(toastTimer);
+        toastTimer = window.setTimeout(() => toast.classList.remove("show"), 2200);
+    }
+
+    async function copyEmail() {
+        try {
+            await navigator.clipboard.writeText(email);
+            showToast("Email copied to clipboard");
+        } catch (error) {
+            const input = document.createElement("textarea");
+            input.value = email;
+            input.setAttribute("readonly", "");
+            input.style.position = "fixed";
+            input.style.opacity = "0";
+            document.body.appendChild(input);
+            input.select();
+
+            const copied = document.execCommand("copy");
+            input.remove();
+            showToast(copied ? "Email copied to clipboard" : email);
+        }
+    }
+
+    emailButton.addEventListener("click", copyEmail);
+
+    const command = "whoami";
+    const typedCommand = document.getElementById("typedCommand");
+    const terminalOutput = document.getElementById("terminalOutput");
+    const terminalCaret = document.getElementById("terminalCaret");
+
+    if (reduceMotion) {
+        typedCommand.textContent = command;
+        terminalOutput.textContent = "Jai Pratama — security research, Linux, and automation";
+    } else {
+        let index = 0;
+
+        const typeCommand = () => {
+            if (index < command.length) {
+                typedCommand.textContent += command[index];
+                index += 1;
+                window.setTimeout(typeCommand, 95 + Math.random() * 45);
+                return;
+            }
+
+            window.setTimeout(() => {
+                terminalOutput.textContent = "Jai Pratama — security research, Linux, and automation";
+                terminalCaret.style.display = "none";
+            }, 380);
+        };
+
+        window.setTimeout(typeCommand, 650);
+    }
+})();
 </script>
-<script>
-/* FADE-IN */
-const faders = document.querySelectorAll('.fade');
-
-const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('show');
-        }
-    });
-});
-
-faders.forEach(el => observer.observe(el));
-
-/* NAV ACTIVE */
-const sections = document.querySelectorAll("section");
-const navLinks = document.querySelectorAll(".navbar a");
-
-window.addEventListener("scroll", () => {
-    let current = "";
-    sections.forEach(section => {
-        if (scrollY >= section.offsetTop - 100) {
-            current = section.id;
-        }
-    });
-    navLinks.forEach(a => {
-        a.classList.remove("active");
-        if (a.getAttribute("href") === "#" + current) {
-            a.classList.add("active");
-        }
-    });
-});
-</script>
-
 </body>
 </html>
