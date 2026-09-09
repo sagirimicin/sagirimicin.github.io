@@ -5,7 +5,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="Jai Pratama — Linux infrastructure and security specialist focused on incident response, server hardening, monitoring, and automation.">
 <meta name="theme-color" content="#282a36">
-<title>Jai Pratama | Linux & Security</title>
+<title>Jai Pratama | Linux &amp; Security</title>
+<link rel="canonical" href="https://sagirimicin.github.io/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Jai Pratama">
+<meta property="og:title" content="Jai Pratama | Linux &amp; Security">
+<meta property="og:description" content="Linux infrastructure, incident response, server hardening, and automation. Explore my projects and experience at PT. RackH Lintas Asia.">
+<meta property="og:url" content="https://sagirimicin.github.io/">
+<meta property="og:image" content="https://github.com/sagirimicin.png">
+<meta property="og:image:alt" content="Jai Pratama's GitHub profile image">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Jai Pratama | Linux &amp; Security">
+<meta name="twitter:description" content="Linux infrastructure, defensive security, and practical automation.">
+<meta name="twitter:image" content="https://github.com/sagirimicin.png">
+<meta name="twitter:image:alt" content="Jai Pratama's GitHub profile image">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -252,7 +266,7 @@ a {
     max-width: 580px;
     margin: 14px 0 0;
     color: var(--muted);
-    font-size: clamp(14px, 1.5vw, 17px);
+    font-size: clamp(16px, 1.5vw, 17px);
 }
 
 .hero-actions {
@@ -334,7 +348,7 @@ a {
 .terminal-title {
     color: var(--muted);
     font-family: "JetBrains Mono", monospace;
-    font-size: 11px;
+    font-size: 12px;
     text-align: center;
 }
 
@@ -427,7 +441,7 @@ a {
     position: relative;
     padding-block: clamp(74px, 10vw, 120px);
     border-top: 1px solid rgba(68, 71, 90, 0.75);
-    scroll-margin-top: calc(var(--nav-height) + 24px);
+    scroll-margin-top: 0;
 }
 
 .section-header {
@@ -514,7 +528,7 @@ p {
 
 .card-title {
     display: block;
-    margin-bottom: 12px;
+    margin: 0 0 12px;
     color: var(--purple);
     font-size: 17px;
     font-weight: 650;
@@ -524,7 +538,8 @@ p {
     margin-top: 18px;
 }
 
-.grid .card + .card {
+.grid .card + .card,
+.experience-grid .card + .card {
     margin-top: 0;
 }
 
@@ -544,7 +559,7 @@ p {
     color: var(--green);
     background: rgba(68, 71, 90, 0.68);
     font-family: "JetBrains Mono", monospace;
-    font-size: 12px;
+    font-size: 14px;
 }
 
 .terminal-box {
@@ -625,7 +640,7 @@ p {
     border-radius: 7px;
     color: var(--foreground);
     background: var(--surface);
-    font-size: 11px;
+    font-size: 12px;
     white-space: nowrap;
     opacity: 0;
     pointer-events: none;
@@ -639,16 +654,19 @@ p {
     transform: translate(-50%, 0);
 }
 
+/* Content stays readable if JavaScript is disabled or fails. */
 .reveal {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 620ms ease, transform 620ms cubic-bezier(0.22, 1, 0.36, 1);
-    transition-delay: var(--delay, 0ms);
+    opacity: 1;
+    transform: none;
 }
 
-.reveal.visible {
-    opacity: 1;
-    transform: translateY(0);
+.reveal.reveal-enter {
+    animation: reveal-in 520ms ease backwards;
+}
+
+@keyframes reveal-in {
+    from { opacity: 0.55; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .toast {
@@ -656,6 +674,8 @@ p {
     bottom: 24px;
     left: 50%;
     z-index: 1100;
+    width: max-content;
+    max-width: min(540px, calc(100vw - 32px));
     padding: 11px 16px;
     border: 1px solid rgba(80, 250, 123, 0.4);
     border-radius: 10px;
@@ -868,12 +888,13 @@ p {
         flex-direction: column;
     }
 
-    .menu-toggle {
+    .navigation-ready .menu-toggle {
         display: inline-grid;
         place-items: center;
     }
 
     .nav-right {
+        visibility: hidden;
         position: absolute;
         top: calc(100% + 1px);
         right: var(--padding-x);
@@ -892,6 +913,7 @@ p {
     }
 
     .nav-right.open {
+        visibility: visible;
         opacity: 1;
         pointer-events: auto;
         transform: translateY(0);
@@ -952,6 +974,69 @@ p {
     }
 }
 
+
+[hidden] { display: none !important; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+
+.skip-link {
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    z-index: 1200;
+    padding: 10px 16px;
+    border-radius: 8px;
+    color: var(--bg);
+    background: var(--foreground);
+    transform: translateY(-180%);
+}
+.skip-link:focus { transform: translateY(0); }
+
+.project-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    margin-top: 14px;
+    color: var(--cyan);
+    font-size: 14px;
+    text-underline-offset: 5px;
+}
+.project-link:hover { color: var(--pink); }
+.card p { margin-bottom: 0; }
+.work-item { scroll-margin-top: 0; }
+.work-item:target { background: rgba(189, 147, 249, 0.08); }
+.work-details { margin-top: 16px; }
+.work-details summary {
+    width: fit-content;
+    padding: 9px 0;
+    color: var(--cyan);
+    font-size: 14px;
+    cursor: pointer;
+}
+.work-details dl { margin: 10px 0 0; }
+.work-details dt { color: var(--foreground); font-weight: 600; }
+.work-details dd { margin: 4px 0 14px; color: var(--muted); }
+.email-link { color: var(--cyan); overflow-wrap: anywhere; text-underline-offset: 5px; }
+.contact-icons { align-items: center; }
+.terminal-body { overflow-wrap: anywhere; }
+.hero-image img { height: auto; }
+
+@media (max-width: 760px) {
+    /* With no script, all navigation links stay available. */
+    html:not(.navigation-ready) .navbar { position: static; }
+    html:not(.navigation-ready) .nav-inner { flex-wrap: wrap; padding-block: 16px; gap: 12px; }
+    html:not(.navigation-ready) .nav-right {
+        position: static;
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+        visibility: visible;
+        opacity: 1;
+        pointer-events: auto;
+        transform: none;
+    }
+    html:not(.navigation-ready) .hero { padding-top: 50px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
     html {
         scroll-behavior: auto;
@@ -975,6 +1060,7 @@ p {
 </head>
 
 <body id="top">
+<a class="skip-link" href="#main">Skip to content</a>
 <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
 
 <header class="navbar" id="navbar">
@@ -998,7 +1084,7 @@ p {
     </nav>
 </header>
 
-<main class="container">
+<main class="container" id="main" tabindex="-1">
     <section class="hero" aria-labelledby="heroTitle">
         <div class="hero-grid">
             <div class="hero-text reveal visible">
@@ -1023,23 +1109,23 @@ p {
                         <span></span>
                     </div>
                     <div class="terminal-body">
-                        <div><span class="prompt">sagiri@parrot:~$</span> <span class="command" id="typedCommand"></span><span class="caret" id="terminalCaret"></span></div>
-                        <div class="terminal-output" id="terminalOutput" aria-live="polite"></div>
+                        <div><span class="prompt">sagiri@parrot:~$</span> <span class="command" id="typedCommand">whoami</span><span class="caret" id="terminalCaret" hidden aria-hidden="true"></span></div>
+                        <div class="terminal-output" id="terminalOutput" aria-live="polite">Jai Pratama — Linux, incident response, and automation</div>
                     </div>
                 </div>
             </div>
 
             <div class="hero-image reveal visible" style="--delay: 120ms;">
                 <div class="hero-image-frame">
-                    <img src="https://github.com/sagirimicin.png" alt="Jai Pratama profile photo" loading="eager" decoding="async">
+                    <img src="https://github.com/sagirimicin.png" alt="Jai Pratama profile photo" width="300" height="300" loading="eager" decoding="async">
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="section reveal" id="about">
+    <section class="section reveal" id="about" tabindex="-1" aria-labelledby="about-title">
         <div class="section-header">
-            <h2>About</h2>
+            <h2 id="about-title">About</h2>
         </div>
 
         <div class="grid">
@@ -1064,14 +1150,14 @@ p {
         </div>
     </section>
 
-    <section class="section reveal" id="skills">
+    <section class="section reveal" id="skills" tabindex="-1" aria-labelledby="skills-title">
         <div class="section-header">
-            <h2>Skills</h2>
+            <h2 id="skills-title">Skills</h2>
         </div>
 
         <div class="grid">
             <div class="card reveal" style="--delay: 80ms;">
-                <span class="card-title">Systems & Infrastructure</span>
+                <h3 class="card-title">Systems & Infrastructure</h3>
                 <div class="tag-list">
                     <span class="tag">Linux</span>
                     <span class="tag">systemd</span>
@@ -1085,7 +1171,7 @@ p {
             </div>
 
             <div class="card reveal" style="--delay: 150ms;">
-                <span class="card-title">Security & Operations</span>
+                <h3 class="card-title">Security & Operations</h3>
                 <div class="tag-list">
                     <span class="tag">Incident Response</span>
                     <span class="tag">Malware Analysis</span>
@@ -1100,7 +1186,7 @@ p {
         </div>
 
         <div class="terminal-box reveal" style="--delay: 220ms;">
-            <div><span class="prompt">sagiri@parrot:~$</span> <span class="cmd">env --profile</span></div>
+            <div><span class="prompt">sagiri@parrot:~$</span> <span class="cmd">cat ~/.config/profile.txt</span></div>
             <div class="output">OS: Parrot OS (KDE)</div>
             <div class="output">Languages: Bash, Python, Go, PHP</div>
             <div class="output">Infrastructure: VPS, Nginx, Apache, WordPress, systemd</div>
@@ -1108,115 +1194,153 @@ p {
         </div>
     </section>
 
-    <section class="section reveal" id="experience">
+    <section class="section reveal" id="experience" tabindex="-1" aria-labelledby="experience-title">
         <div class="section-header">
-            <h2>Experience</h2>
+            <h2 id="experience-title">Experience</h2>
         </div>
 
         <div class="experience-grid">
             <article class="card reveal" style="--delay: 70ms;">
-                <span class="card-title">NOC / Infrastructure Operations</span>
-                <p class="role-meta">Private infrastructure provider · 2026 — Present</p>
+                <h3 class="card-title">NOC / Infrastructure Operations</h3>
+                <p class="role-meta">PT. RackH Lintas Asia · June 2026 — Present</p>
                 <p>Monitor network, hosting, and server environments; perform first-line incident triage; review traffic and availability data; and support DNS, upstream, and infrastructure troubleshooting.</p>
             </article>
 
             <article class="card reveal" style="--delay: 130ms;">
-                <span class="card-title">System Analyst</span>
+                <h3 class="card-title">System Analyst</h3>
                 <p class="role-meta">Private company · Feb 2024 — Mar 2026</p>
                 <p>Monitored system and network security, performed controlled vulnerability validation, investigated suspicious processes and persistence, and built scripts to support analysis and remediation.</p>
             </article>
 
             <article class="card reveal" style="--delay: 190ms;">
-                <span class="card-title">WordPress Developer</span>
+                <h3 class="card-title">WordPress Developer</h3>
                 <p class="role-meta">Insight Marketing Communication · Oct 2019 — Mar 2020</p>
                 <p>Built and optimized WordPress websites with attention to performance, search visibility, interface quality, and maintainable content workflows.</p>
             </article>
         </div>
     </section>
 
-    <section class="section reveal" id="projects">
+    <section class="section reveal" id="projects" tabindex="-1" aria-labelledby="projects-title">
         <div class="section-header">
-            <h2>Projects</h2>
+            <h2 id="projects-title">Projects</h2>
         </div>
 
         <div class="grid">
             <article class="card reveal" style="--delay: 70ms;">
-                <span class="card-title">Linux Incident Evidence Collector</span>
-                A low-impact collection workflow for processes, network connections, authentication logs, systemd units, cron persistence, suspicious files, and hashes during compromised-server triage.
+                <h3 class="card-title">Linux Incident Evidence Collector</h3>
+                <p>A low-impact collection workflow for processes, network connections, authentication logs, systemd units, cron persistence, suspicious files, and hashes during compromised-server triage.</p>
+                <a class="project-link" href="#case-triage">Read work summary<span class="sr-only">: Linux Incident Evidence Collector</span></a>
             </article>
 
             <article class="card reveal" style="--delay: 130ms;">
-                <span class="card-title">GSocket Threat Assessment</span>
-                Defensive analysis of GSocket and gs-netcat covering behavior, relay infrastructure, host and network indicators, egress controls, containment, and post-compromise recovery.
+                <h3 class="card-title">GSocket Threat Assessment</h3>
+                <p>Defensive analysis of GSocket and gs-netcat covering behavior, relay infrastructure, host and network indicators, egress controls, containment, and post-compromise recovery.</p>
+                <a class="project-link" href="#case-gsocket">Read work summary<span class="sr-only">: GSocket Threat Assessment</span></a>
             </article>
 
             <article class="card reveal" style="--delay: 190ms;">
-                <span class="card-title">Controlled Web Security Validation</span>
-                Staging-only validation workflows for authorization boundaries, unsafe file handling, misconfiguration, exposure, evidence capture, and remediation reporting.
+                <h3 class="card-title">Controlled Web Security Validation</h3>
+                <p>Staging-only validation workflows for authorization boundaries, unsafe file handling, misconfiguration, exposure, evidence capture, and remediation reporting.</p>
+                <a class="project-link" href="#case-web">Read work summary<span class="sr-only">: Controlled Web Security Validation</span></a>
             </article>
 
             <article class="card reveal" style="--delay: 250ms;">
-                <span class="card-title">Monitoring & Alerting Workflow</span>
-                Operational checks and reporting concepts for Cacti and MRTG data, including outage detection, threshold alerts, escalation, and concise daily traffic summaries.
+                <h3 class="card-title">Monitoring & Alerting Workflow</h3>
+                <p>Operational checks and reporting concepts for Cacti and MRTG data, including outage detection, threshold alerts, escalation, and concise daily traffic summaries.</p>
+                <a class="project-link" href="#case-monitoring">Read work summary<span class="sr-only">: Monitoring & Alerting Workflow</span></a>
             </article>
         </div>
     </section>
 
-    <section class="section reveal" id="case">
+    <section class="section reveal" id="case" tabindex="-1" aria-labelledby="case-title">
         <div class="section-header">
-            <h2>Recent Work</h2>
+            <h2 id="case-title">Recent Work</h2>
         </div>
 
         <div class="recent-work">
-            <article class="work-item reveal" style="--delay: 60ms;">
+            <article class="work-item reveal" style="--delay: 60ms;" id="case-triage" tabindex="-1">
                 <div class="work-date">July 2026</div>
                 <div class="work-content">
-                    <span class="card-title">Compromised Linux Server Triage</span>
+                    <h3 class="card-title">Compromised Linux Server Triage</h3>
                     <p>Reviewed server audit bundles, identified suspicious services and persistence indicators, mapped evidence into an incident report, and prepared collection and mitigation steps for recovery.</p>
+                    <details class="work-details">
+                        <summary>Scope, approach &amp; deliverable</summary>
+                        <dl>
+                            <dt>Scope</dt><dd>Compromised-server audit bundles and signs of persistence.</dd>
+                            <dt>Approach</dt><dd>Reviewed suspicious services and persistence indicators, organized the evidence, and prepared collection and mitigation steps.</dd>
+                            <dt>Deliverable</dt><dd>An incident report and recovery steps.</dd>
+                        </dl>
+                    </details>
                 </div>
             </article>
 
-            <article class="work-item reveal" style="--delay: 120ms;">
+            <article class="work-item reveal" style="--delay: 120ms;" id="case-gsocket" tabindex="-1">
                 <div class="work-date">July 2026</div>
                 <div class="work-content">
-                    <span class="card-title">Covert Remote-Access Analysis</span>
+                    <h3 class="card-title">Covert Remote-Access Analysis</h3>
                     <p>Produced a defensive assessment of GSocket and gs-netcat, including detection opportunities, relay and egress considerations, containment actions, and post-compromise validation.</p>
+                    <details class="work-details">
+                        <summary>Scope, approach &amp; deliverable</summary>
+                        <dl>
+                            <dt>Scope</dt><dd>Defensive assessment of GSocket and gs-netcat.</dd>
+                            <dt>Approach</dt><dd>Examined detection opportunities, relay behavior, egress considerations, and containment actions.</dd>
+                            <dt>Deliverable</dt><dd>An assessment covering host and network indicators and post-compromise validation.</dd>
+                        </dl>
+                    </details>
                 </div>
             </article>
 
-            <article class="work-item reveal" style="--delay: 180ms;">
+            <article class="work-item reveal" style="--delay: 180ms;" id="case-web" tabindex="-1">
                 <div class="work-date">July 2026</div>
                 <div class="work-content">
-                    <span class="card-title">Web Security Review & Validation</span>
+                    <h3 class="card-title">Web Security Review & Validation</h3>
                     <p>Reviewed an exposed PHP security agent for unsafe file access and path handling, then documented impact, safe validation methods, and remediation without publishing sensitive implementation details.</p>
+                    <details class="work-details">
+                        <summary>Scope, approach &amp; deliverable</summary>
+                        <dl>
+                            <dt>Scope</dt><dd>An exposed PHP security agent and its file access and path handling.</dd>
+                            <dt>Approach</dt><dd>Reviewed impact, safe validation methods, and remediation while keeping sensitive implementation details private.</dd>
+                            <dt>Deliverable</dt><dd>A documented review of the issues and remediation guidance.</dd>
+                        </dl>
+                    </details>
                 </div>
             </article>
 
-            <article class="work-item reveal" style="--delay: 240ms;">
+            <article class="work-item reveal" style="--delay: 240ms;" id="case-monitoring" tabindex="-1">
                 <div class="work-date">June–July 2026</div>
                 <div class="work-content">
-                    <span class="card-title">Monitoring & Incident Visibility</span>
+                    <h3 class="card-title">Monitoring & Incident Visibility</h3>
                     <p>Designed practical alerting and daily-report improvements around Cacti and MRTG data to reduce missed outages and make first-line incident escalation more reliable.</p>
+                    <details class="work-details">
+                        <summary>Scope, approach &amp; deliverable</summary>
+                        <dl>
+                            <dt>Scope</dt><dd>Incident visibility and traffic reporting using Cacti and MRTG data.</dd>
+                            <dt>Approach</dt><dd>Designed threshold alerts, escalation steps, and daily-report improvements around operational monitoring data.</dd>
+                            <dt>Deliverable</dt><dd>An alerting and reporting workflow design; deployment results are not presented here.</dd>
+                        </dl>
+                    </details>
                 </div>
             </article>
         </div>
 
-        <p class="confidentiality">Descriptions are intentionally generalized to protect company, customer, infrastructure, and incident details.</p>
+        <p class="confidentiality">Descriptions are intentionally generalized to protect customer identities, internal infrastructure, and sensitive incident details.</p>
     </section>
 
-    <section class="section reveal" id="contact">
+    <section class="section reveal" id="contact" tabindex="-1" aria-labelledby="contact-title">
         <div class="section-header">
-            <h2>Contact</h2>
+            <h2 id="contact-title">Contact</h2>
         </div>
 
-        <p class="contact-copy">The easiest way to reach me is through email or GitHub. Use the email button to copy my address.</p>
+        <p class="contact-copy">Get in touch about Linux infrastructure, defensive security, or automation.</p>
+
+        <p><a class="email-link" href="mailto:firzaanonymous@gmail.com">firzaanonymous@gmail.com</a></p>
 
         <div class="contact-icons">
             <a href="https://github.com/sagirimicin" target="_blank" rel="noopener noreferrer" class="icon" data-label="GitHub" aria-label="Open GitHub profile">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 0C5.37 0 0 5.37 0 12a12 12 0 008.2 11.38c.6.11.82-.26.82-.58v-2.02c-3.34.73-4.04-1.61-4.04-1.61-.55-1.38-1.34-1.74-1.34-1.74-1.1-.75.08-.74.08-.74 1.21.09 1.85 1.24 1.85 1.24 1.08 1.85 2.84 1.32 3.53 1 .11-.78.42-1.32.76-1.62-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.17 0 0 1.01-.32 3.3 1.23a11.52 11.52 0 016 0C17.34 6.3 18.35 6.62 18.35 6.62c.66 1.65.24 2.87.12 3.17.77.84 1.24 1.91 1.24 3.22 0 4.61-2.8 5.63-5.48 5.93.43.37.81 1.1.81 2.22v3.29c0 .32.21.7.82.58A12 12 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
             </a>
 
-            <button class="icon" id="emailButton" type="button" data-label="Copy email" aria-label="Copy email address">
+            <button class="icon" id="emailButton" type="button" hidden data-label="Copy email" aria-label="Copy email address">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2m0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
             </button>
         </div>
@@ -1224,165 +1348,164 @@ p {
 
     <footer class="footer">
         <span class="footer-signature">made with <span class="footer-heart" aria-label="love">&lt;3</span></span>
-        <span class="footer-meta">Jai Pratama<span class="footer-separator" aria-hidden="true">·</span>Last updated July 2026</span>
+        <span class="footer-meta">Jai Pratama<span class="footer-separator" aria-hidden="true">·</span>Last updated <time datetime="2026-09-09">September 2026</time></span>
     </footer>
 </main>
 
 <div class="toast" id="toast" role="status" aria-live="polite">Email copied to clipboard</div>
 
-<button class="back-to-top" id="backToTop" type="button" aria-label="Back to top">
+<button class="back-to-top" id="backToTop" type="button" hidden aria-label="Back to top">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="m12 8 6 6-1.4 1.4-4.6-4.6-4.6 4.6L6 14z"/></svg>
 </button>
 
 <script>
 (() => {
     "use strict";
-
-    const email = "firzaanonymous@gmail.com";
+    const root = document.documentElement;
     const navbar = document.getElementById("navbar");
     const progress = document.getElementById("scrollProgress");
     const backToTop = document.getElementById("backToTop");
     const menuToggle = document.getElementById("menuToggle");
-    const navLinksContainer = document.getElementById("navLinks");
-    const navLinks = [...document.querySelectorAll('.nav-right a[href^="#"]')];
+    const nav = document.getElementById("navLinks");
+    const links = [...nav.querySelectorAll('a[href^="#"]')];
     const sections = [...document.querySelectorAll("main section[id]")];
-    const toast = document.getElementById("toast");
+    const mobile = window.matchMedia("(max-width: 760px)");
+    const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
     const emailButton = document.getElementById("emailButton");
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const emailLink = document.querySelector(".email-link");
+    const toast = document.getElementById("toast");
 
-    function updateScrollUI() {
-        const scrollTop = window.scrollY;
-        const scrollable = document.documentElement.scrollHeight - window.innerHeight;
-        const percentage = scrollable > 0 ? (scrollTop / scrollable) * 100 : 0;
-
-        progress.style.width = `${Math.min(100, Math.max(0, percentage))}%`;
-        navbar.classList.toggle("scrolled", scrollTop > 10);
-        backToTop.classList.toggle("visible", scrollTop > 600);
-    }
-
-    window.addEventListener("scroll", updateScrollUI, { passive: true });
-    updateScrollUI();
-
-    const revealObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (!entry.isIntersecting) return;
-            entry.target.classList.add("visible");
-            observer.unobserve(entry.target);
-        });
-    }, { threshold: 0.12, rootMargin: "0px 0px -45px" });
-
-    document.querySelectorAll(".reveal:not(.visible)").forEach(element => revealObserver.observe(element));
-
-    const activeObserver = new IntersectionObserver(entries => {
-        const visible = entries
-            .filter(entry => entry.isIntersecting)
-            .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-
-        if (!visible) return;
-
-        navLinks.forEach(link => {
-            link.classList.toggle("active", link.getAttribute("href") === `#${visible.target.id}`);
-        });
-    }, {
-        rootMargin: `-${parseInt(getComputedStyle(document.documentElement).getPropertyValue("--nav-height"), 10) + 20}px 0px -55%`,
-        threshold: [0.08, 0.2, 0.45]
-    });
-
-    sections.forEach(section => activeObserver.observe(section));
-
-    function closeMenu() {
-        navLinksContainer.classList.remove("open");
+    function closeMenu(restoreFocus = false) {
+        nav.classList.remove("open");
         menuToggle.setAttribute("aria-expanded", "false");
         menuToggle.setAttribute("aria-label", "Open navigation");
-        document.body.classList.remove("menu-open");
+        if (restoreFocus) menuToggle.focus();
     }
-
     menuToggle.addEventListener("click", () => {
-        const willOpen = !navLinksContainer.classList.contains("open");
-        navLinksContainer.classList.toggle("open", willOpen);
-        menuToggle.setAttribute("aria-expanded", String(willOpen));
-        menuToggle.setAttribute("aria-label", willOpen ? "Close navigation" : "Open navigation");
-        document.body.classList.toggle("menu-open", willOpen);
+        const open = !nav.classList.contains("open");
+        nav.classList.toggle("open", open);
+        menuToggle.setAttribute("aria-expanded", String(open));
+        menuToggle.setAttribute("aria-label", open ? "Close navigation" : "Open navigation");
     });
-
-    navLinks.forEach(link => link.addEventListener("click", closeMenu));
-
+    links.forEach(link => link.addEventListener("click", () => {
+        closeMenu();
+        document.getElementById(link.hash.slice(1))?.focus({ preventScroll: true });
+    }));
     document.addEventListener("keydown", event => {
-        if (event.key === "Escape") closeMenu();
+        if (event.key === "Escape" && nav.classList.contains("open")) closeMenu(true);
     });
-
+    document.addEventListener("pointerdown", event => {
+        if (!navbar.contains(event.target) && nav.classList.contains("open")) {
+            closeMenu(nav.contains(document.activeElement));
+        }
+    });
+    navbar.addEventListener("focusout", event => {
+        if (event.relatedTarget && !navbar.contains(event.relatedTarget)) closeMenu();
+    });
     window.addEventListener("resize", () => {
-        if (window.innerWidth > 760) closeMenu();
+        if (!mobile.matches) closeMenu();
+        else if (!nav.classList.contains("open") && nav.contains(document.activeElement)) menuToggle.focus();
+        scheduleScrollUI();
     });
+    root.classList.add("navigation-ready");
 
-    backToTop.addEventListener("click", () => {
-        window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
-    });
-
-    document.querySelectorAll(".card").forEach(card => {
-        card.addEventListener("pointermove", event => {
-            const rect = card.getBoundingClientRect();
-            card.style.setProperty("--mouse-x", `${event.clientX - rect.left}px`);
-            card.style.setProperty("--mouse-y", `${event.clientY - rect.top}px`);
+    function updateScrollUI() {
+        const scrollable = root.scrollHeight - window.innerHeight;
+        const percentage = scrollable > 0 ? window.scrollY / scrollable * 100 : 0;
+        progress.style.width = `${Math.min(100, Math.max(0, percentage))}%`;
+        navbar.classList.toggle("scrolled", window.scrollY > 10);
+        const showTop = window.scrollY > 600;
+        if (!showTop && document.activeElement === backToTop) document.getElementById("main").focus({ preventScroll: true });
+        backToTop.hidden = !showTop;
+        backToTop.classList.toggle("visible", showTop);
+        let current = "";
+        const offset = navbar.getBoundingClientRect().height + 40;
+        sections.forEach(section => {
+            if (section.getBoundingClientRect().top <= offset) current = section.id;
         });
+        if (scrollable > 0 && window.scrollY >= scrollable - 2) current = sections.at(-1).id;
+        links.forEach(link => {
+            const active = link.hash === `#${current}`;
+            link.classList.toggle("active", active);
+            if (active) link.setAttribute("aria-current", "location");
+            else link.removeAttribute("aria-current");
+        });
+    }
+    let scrollQueued = false;
+    function scheduleScrollUI() {
+        if (scrollQueued) return;
+        scrollQueued = true;
+        requestAnimationFrame(() => { updateScrollUI(); scrollQueued = false; });
+    }
+    window.addEventListener("scroll", scheduleScrollUI, { passive: true });
+    window.addEventListener("load", scheduleScrollUI);
+    updateScrollUI();
+    backToTop.addEventListener("click", () => {
+        document.getElementById("main").focus({ preventScroll: true });
+        window.scrollTo({ top: 0, behavior: motion.matches ? "auto" : "smooth" });
     });
 
+    // Animation is optional; content never waits for the observer to be readable.
+    if (!motion.matches && "IntersectionObserver" in window) {
+        const observer = new IntersectionObserver((entries, self) => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+                entry.target.classList.add("reveal-enter");
+                self.unobserve(entry.target);
+            });
+        }, { threshold: 0, rootMargin: "0px 0px -25px" });
+        document.querySelectorAll(".reveal:not(.visible)").forEach(element => observer.observe(element));
+    }
+    if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+        document.querySelectorAll(".card").forEach(card => {
+            card.addEventListener("pointermove", event => {
+                if (motion.matches) return;
+                const rect = card.getBoundingClientRect();
+                card.style.setProperty("--mouse-x", `${event.clientX - rect.left}px`);
+                card.style.setProperty("--mouse-y", `${event.clientY - rect.top}px`);
+            });
+        });
+    }
     let toastTimer;
-
     function showToast(message) {
         toast.textContent = message;
         toast.classList.add("show");
         window.clearTimeout(toastTimer);
-        toastTimer = window.setTimeout(() => toast.classList.remove("show"), 2200);
+        toastTimer = window.setTimeout(() => toast.classList.remove("show"), 4500);
     }
-
-    async function copyEmail() {
+    emailButton.hidden = false;
+    emailButton.addEventListener("click", async () => {
+        const email = emailLink.textContent.trim();
         try {
+            if (!navigator.clipboard?.writeText) throw new Error("Clipboard unavailable");
             await navigator.clipboard.writeText(email);
             showToast("Email copied to clipboard");
-        } catch (error) {
-            const input = document.createElement("textarea");
-            input.value = email;
-            input.setAttribute("readonly", "");
-            input.style.position = "fixed";
-            input.style.opacity = "0";
-            document.body.appendChild(input);
-            input.select();
-
-            const copied = document.execCommand("copy");
-            input.remove();
-            showToast(copied ? "Email copied to clipboard" : email);
+        } catch {
+            showToast("Copy unavailable. Select the email address above, or click it to write an email.");
+            emailLink.focus();
         }
-    }
-
-    emailButton.addEventListener("click", copyEmail);
-
-    const command = "whoami";
-    const typedCommand = document.getElementById("typedCommand");
-    const terminalOutput = document.getElementById("terminalOutput");
-    const terminalCaret = document.getElementById("terminalCaret");
-
-    if (reduceMotion) {
-        typedCommand.textContent = command;
-        terminalOutput.textContent = "Jai Pratama — Linux, incident response, and automation";
-    } else {
+    });
+    const command = document.getElementById("typedCommand");
+    const output = document.getElementById("terminalOutput");
+    const caret = document.getElementById("terminalCaret");
+    const intro = output.textContent;
+    if (!motion.matches) {
+        command.textContent = "";
+        output.textContent = "";
+        caret.hidden = false;
         let index = 0;
-
-        const typeCommand = () => {
-            if (index < command.length) {
-                typedCommand.textContent += command[index];
-                index += 1;
-                window.setTimeout(typeCommand, 95 + Math.random() * 45);
+        function typeCommand() {
+            if (motion.matches) {
+                command.textContent = "whoami";
+                output.textContent = intro;
+                caret.hidden = true;
                 return;
             }
-
-            window.setTimeout(() => {
-                terminalOutput.textContent = "Jai Pratama — Linux, incident response, and automation";
-                terminalCaret.style.display = "none";
-            }, 380);
-        };
-
-        window.setTimeout(typeCommand, 650);
+            command.textContent = "whoami".slice(0, ++index);
+            if (index < 6) window.setTimeout(typeCommand, 110);
+            else { output.textContent = intro; caret.hidden = true; }
+        }
+        window.setTimeout(typeCommand, 350);
     }
 })();
 </script>
